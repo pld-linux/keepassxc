@@ -2,7 +2,7 @@
 # - is EA: x86 true? it conflicts with "cross platform" keyword
 # 
 Summary:	KeePassX - Cross Platform Password Manager
-Summary(pl):	KeePassX - Wieloplatformowy zarz±dca hase³
+Summary(pl.UTF-8):   KeePassX - Wieloplatformowy zarzÄ…dca haseÅ‚
 Name:		KeePassX
 Version:	0.2.2
 Release:	0.1
@@ -28,15 +28,15 @@ insert the key-disk to unlock the whole database. The databases are
 encrypted using the best and most secure encryption algorithms
 currently known (AES and Twofish).
 
-%description -l pl
-KeePassX to darmowy i maj±cy otwarte ¼ród³a zarz±dca do przechowywania
-hase³, który pozwala na zarz±dzanie has³ami w bardzo bezpieczny
-sposób. Pozwala umie¶ciæ wszystkie swoje has³a w jednej bazie, która
-jest zabezpieczona poprzez jedno bardzo trudne has³o albo dysk z
-kluczem. Wystarczy wiêc zapamiêtaæ jedno trudne has³o lub umie¶ciæ
-dysk z kluczem aby odblokowaæ ca³± bazê z kluczami. Baza jest
+%description -l pl.UTF-8
+KeePassX to darmowy i majÄ…cy otwarte ÅºrÃ³dÅ‚a zarzÄ…dca do przechowywania
+haseÅ‚, ktÃ³ry pozwala na zarzÄ…dzanie hasÅ‚ami w bardzo bezpieczny
+sposÃ³b. Pozwala umieÅ›ciÄ‡ wszystkie swoje hasÅ‚a w jednej bazie, ktÃ³ra
+jest zabezpieczona poprzez jedno bardzo trudne hasÅ‚o albo dysk z
+kluczem. Wystarczy wiÄ™c zapamiÄ™taÄ‡ jedno trudne hasÅ‚o lub umieÅ›ciÄ‡
+dysk z kluczem aby odblokowaÄ‡ caÅ‚Ä… bazÄ™ z kluczami. Baza jest
 zaszyfrowana najlepszymi i najbardziej bezpiecznymi algorytmami
-szyfrowania jakie s± do tej pory znane (AES i TwoFish).
+szyfrowania jakie sÄ… do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q -n keepassx-%{version}
