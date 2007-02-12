@@ -2,7 +2,7 @@
 # - is EA: x86 true? it conflicts with "cross platform" keyword
 # 
 Summary:	KeePassX - Cross Platform Password Manager
-Summary(pl.UTF-8):   KeePassX - Wieloplatformowy zarządca haseł
+Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
 Version:	0.2.2
 Release:	0.1
