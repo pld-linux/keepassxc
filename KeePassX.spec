@@ -13,6 +13,7 @@ Source0:	http://dl.sourceforge.net/keepassx/%{name}-%{version}.tar.gz
 URL:		http://keepassx.sourceforge.net/
 BuildRequires:	QtGui-devel >= 4.0
 BuildRequires:	QtXml-devel >= 4.0
+BuildRequires:	qt4-build >= 4.0
 BuildRequires:	qt4-designer >= 4.0
 BuildRequires:	qt4-qmake >= 4.0
 BuildRequires:	rpmbuild(macros) >= 1.230
