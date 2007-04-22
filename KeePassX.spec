@@ -11,6 +11,7 @@ Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/keepassx/%{name}-%{version}.tar.gz
 # Source0-md5:	5ee945ab12c2667ef5c4013a0636c26f
 URL:		http://keepassx.sourceforge.net/
+BuildRequires:	Qt3Support-devel >= 4.0
 BuildRequires:	QtGui-devel >= 4.0
 BuildRequires:	QtXml-devel >= 4.0
 BuildRequires:	qt4-build >= 4.0
