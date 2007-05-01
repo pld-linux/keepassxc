@@ -59,11 +59,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%dir %{_datadir}/keepass/i18n
-%dir %{_datadir}/keepass/icons
-%dir %{_datadir}/keepass/icons/nuvola/32x32/actions
-%dir %{_datadir}/keepass/icons/nuvola/32x32/apps
-%dir %{_datadir}/keepass/icons/nuvola/32x32/filesystems
-%{_datadir}/keepass/i18n/*
-%{_datadir}/keepass/icons/*.png
-%{_datadir}/keepass/icons/nuvola/32x32/*/*.png
+%{_datadir}/keepass
