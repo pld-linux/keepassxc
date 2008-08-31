@@ -1,6 +1,3 @@
-# TODO:
-# - is EA: x86 true? it conflicts with "cross platform" keyword
-# 
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
@@ -19,7 +16,6 @@ BuildRequires:	qt4-designer >= 4.0
 BuildRequires:	qt4-qmake >= 4.3.3-3
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libXtst-devel
-ExclusiveArch:	%{ix86}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
