@@ -1,12 +1,12 @@
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
-Version:	0.3.1
+Version:	0.3.3
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/keepassx/%{name}-%{version}.tar.gz
-# Source0-md5:	1d6ebb010e44cf2d0a635b4796498694
+# Source0-md5:	9796b905c92e1de6f3d600a28433aeb0
 URL:		http://keepassx.sourceforge.net/
 BuildRequires:	Qt3Support-devel >= 4.0
 BuildRequires:	QtGui-devel >= 4.0
@@ -38,7 +38,7 @@ zaszyfrowana najlepszymi i najbardziej bezpiecznymi algorytmami
 szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
-%setup -q
+%setup -q -n keepassx-%{version}
 
 %build
 qmake-qt4 \
