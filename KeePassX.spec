@@ -1,8 +1,13 @@
+# TODO:
+#	unpackaged:
+#	 %{_datadir}/mime/packages/keepassx.xml
+#	 %{_datadir}/mimelnk/application/x-keepass.desktop
+
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
 Version:	0.4.1
-Release:	0.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
