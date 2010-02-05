@@ -1,8 +1,3 @@
-# TODO:
-#	unpackaged:
-#	 %{_datadir}/mime/packages/keepassx.xml
-#	 %{_datadir}/mimelnk/application/x-keepass.desktop
-
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
@@ -61,6 +56,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
+%{_datadir}/mime/packages/keepassx.xml
+%{_datadir}/mimelnk/application/x-keepass.desktop
 %{_desktopdir}/keepassx.desktop
 %{_pixmapsdir}/keepassx.xpm
 %{_datadir}/keepassx
