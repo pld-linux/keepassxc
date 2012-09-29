@@ -72,4 +72,32 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mime/packages/keepassx.xml
 %{_desktopdir}/keepassx.desktop
 %{_pixmapsdir}/keepassx.xpm
-%{_datadir}/keepassx
+%dir %{_datadir}/keepassx
+%{_datadir}/keepassx/icons
+%{_datadir}/keepassx/license.html
+%dir %{_datadir}/keepassx/i18n
+%lang(de) %{_datadir}/keepassx/i18n/keepassx-de_DE.qm
+%lang(es) %{_datadir}/keepassx/i18n/keepassx-es_ES.qm
+%lang(fi) %{_datadir}/keepassx/i18n/keepassx-fi_FI.qm
+%lang(fi) %{_datadir}/keepassx/i18n/qt_fi.qm
+%lang(fr) %{_datadir}/keepassx/i18n/keepassx-fr_FR.qm
+%lang(gl) %{_datadir}/keepassx/i18n/keepassx-gl_ES.qm
+%lang(gl) %{_datadir}/keepassx/i18n/qt_gl_ES.qm
+%lang(hu) %{_datadir}/keepassx/i18n/keepassx-hu_HU.qm
+%lang(hu) %{_datadir}/keepassx/i18n/qt_hu.qm
+%lang(it) %{_datadir}/keepassx/i18n/keepassx-it_IT.qm
+%lang(it) %{_datadir}/keepassx/i18n/qt_it.qm
+%lang(ja) %{_datadir}/keepassx/i18n/keepassx-ja_JP.qm
+%lang(nb) %{_datadir}/keepassx/i18n/keepassx-nb_NO.qm
+%lang(nl) %{_datadir}/keepassx/i18n/keepassx-nl_NL.qm
+%lang(nl) %{_datadir}/keepassx/i18n/qt_nl.qm
+%lang(pl) %{_datadir}/keepassx/i18n/keepassx-pl_PL.qm
+%lang(pt) %{_datadir}/keepassx/i18n/keepassx-pt_PT.qm
+%lang(ru) %{_datadir}/keepassx/i18n/keepassx-ru_RU.qm
+%lang(sk) %{_datadir}/keepassx/i18n/keepassx-sk_SK.qm
+%lang(sr) %{_datadir}/keepassx/i18n/keepassx-sr_RS.qm
+%lang(sr) %{_datadir}/keepassx/i18n/qt_sr.qm
+%lang(tr) %{_datadir}/keepassx/i18n/keepassx-tr_TR.qm
+%lang(tr) %{_datadir}/keepassx/i18n/qt_tr.qm
+%lang(uk) %{_datadir}/keepassx/i18n/keepassx-uk_UA.qm
+%lang(zh_CN) %{_datadir}/keepassx/i18n/keepassx-zh_CN.qm
