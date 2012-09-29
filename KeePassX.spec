@@ -4,7 +4,7 @@ Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
 Version:	0.4.3
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
@@ -12,6 +12,7 @@ Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 URL:		http://keepassx.sourceforge.net/
 Patch1:		keepassx-0.3.3-gcc43.patch
 Patch2:		keepassx-0.4.3-gcc47.patch
+BuildRequires:	ImageMagick
 BuildRequires:	Qt3Support-devel >= 4.0
 BuildRequires:	QtGui-devel >= 4.0
 BuildRequires:	QtXml-devel >= 4.0
@@ -59,10 +60,16 @@ qmake-qt4 \
 	_CXXFLAGS="%{rpmcxxflags}" \
 	%{nil}
 
+# use png icon
+convert share/pixmaps/keepassx.xpm share/pixmaps/keepassx.png
+
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
+
+%{__rm} $RPM_BUILD_ROOT%{_pixmapsdir}/keepassx.xpm
+cp -p share/pixmaps/keepassx.png $RPM_BUILD_ROOT%{_pixmapsdir}/keepassx.png
 
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/mimelnk
 
@@ -84,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/keepassx
 %{_datadir}/mime/packages/keepassx.xml
 %{_desktopdir}/keepassx.desktop
-%{_pixmapsdir}/keepassx.xpm
+%{_pixmapsdir}/keepassx.png
 %dir %{_datadir}/keepassx
 %{_datadir}/keepassx/icons
 %{_datadir}/keepassx/license.html
