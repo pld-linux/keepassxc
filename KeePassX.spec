@@ -12,7 +12,6 @@ BuildRequires:	Qt3Support-devel >= 4.0
 BuildRequires:	QtGui-devel >= 4.0
 BuildRequires:	QtXml-devel >= 4.0
 BuildRequires:	qt4-build >= 4.3.3-3
-BuildRequires:	qt4-designer >= 4.0
 BuildRequires:	qt4-qmake >= 4.3.3-3
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libXtst-devel
