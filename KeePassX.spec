@@ -19,6 +19,9 @@ BuildRequires:	qt4-build >= 4.3.3-3
 BuildRequires:	qt4-qmake >= 4.3.3-3
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libXtst-devel
+Requires:	desktop-file-utils
+Requires:	hicolor-icon-theme
+Requires:	shared-mime-info
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -65,6 +68,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%update_icon_cache hicolor
+%update_desktop_database
+%update_mime_database
+
+%postun
+%update_icon_cache hicolor
+%update_desktop_database_postun
+%update_mime_database
 
 %files
 %defattr(644,root,root,755)
