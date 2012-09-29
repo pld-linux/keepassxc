@@ -8,6 +8,8 @@ Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 # Source0-md5:	1df67bb22b2e08df49f09e61d156f508
 URL:		http://keepassx.sourceforge.net/
+Patch1:		keepassx-0.3.3-gcc43.patch
+Patch2:		keepassx-0.4.3-gcc47.patch
 BuildRequires:	Qt3Support-devel >= 4.0
 BuildRequires:	QtGui-devel >= 4.0
 BuildRequires:	QtXml-devel >= 4.0
@@ -38,6 +40,8 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q -n keepassx-%{version}
+%patch1 -p0
+%patch2 -p1
 
 %build
 qmake-qt4 \
