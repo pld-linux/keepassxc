@@ -1,3 +1,5 @@
+# TODO
+# - forcing our cflags breaks build
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
@@ -5,7 +7,7 @@ Version:	0.4.3
 Release:	2
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 # Source0-md5:	1df67bb22b2e08df49f09e61d156f508
 URL:		http://keepassx.sourceforge.net/
 Patch1:		keepassx-0.3.3-gcc43.patch
@@ -45,22 +47,28 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %build
 qmake-qt4 \
-	PREFIX=$RPM_BUILD_ROOT%{_prefix}
-%{__make}
+	PREFIX=%{_prefix}
+
+%{__make} \
+	CC="%{__cc}" \
+	CXX="%{__cxx}" \
+	_CFLAGS="%{rpmcflags}" \
+	_CXXFLAGS="%{rpmcxxflags}" \
+	%{nil}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+%{__make} install \
+	INSTALL_ROOT=$RPM_BUILD_ROOT
 
-%{__make} install
-
-rm -r $RPM_BUILD_ROOT%{_datadir}/mimelnk
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/mimelnk
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/keepassx
 %{_datadir}/mime/packages/keepassx.xml
 %{_desktopdir}/keepassx.desktop
 %{_pixmapsdir}/keepassx.xpm
