@@ -12,15 +12,21 @@ Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 Source0:	http://www.keepassx.org/dev/attachments/download/69/keepassx-%{version}-%{pre}.tar.gz
 # Source0-md5:	7c1c3a42aff63abd8db3bc8df6c963f6
+Patch0:		git.patch
 URL:		http://keepassx.sourceforge.net/
-BuildRequires:	ImageMagick
-BuildRequires:	Qt3Support-devel >= 4.0
-BuildRequires:	QtGui-devel >= 4.0
-BuildRequires:	QtXml-devel >= 4.0
-BuildRequires:	qt4-build >= 4.3.3-3
-BuildRequires:	qt4-qmake >= 4.3.3-3
+BuildRequires:	QtCore-devel >= 4.6.0
+BuildRequires:	QtDBus-devel >= 4.6.0
+BuildRequires:	QtGui-devel >= 4.6.0
+BuildRequires:	QtXml-devel >= 4.6.0
+BuildRequires:	libgcrypt-devel >= 1.6
+BuildRequires:	qt4-build >= 4.6.0
+BuildRequires:	qt4-linguist >= 4.6.0
+BuildRequires:	qt4-qmake >= 4.6.0
 BuildRequires:	rpmbuild(macros) >= 1.230
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXtst-devel
+BuildRequires:	zlib-devel
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
 Requires:	shared-mime-info
@@ -47,6 +53,7 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q -n keepassx-%{version}-%{pre}
+%patch0 -p1
 
 %build
 install -d build
@@ -81,6 +88,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/keepassx.desktop
 %dir %{_datadir}/keepassx
 %{_datadir}/keepassx/icons
+%dir %{_datadir}/keepassx/translations
+%lang(de) %{_datadir}/keepassx/translations/keepassx_de.qm
+%{_datadir}/keepassx/translations/keepassx_en_plurals.qm
+%lang(it) %{_datadir}/keepassx/translations/keepassx_it.qm
+%lang(nl) %{_datadir}/keepassx/translations/keepassx_nl_NL.qm
+%lang(sv) %{_datadir}/keepassx/translations/keepassx_sv.qm
 %dir %{_libdir}/keepassx
 %attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-x11.so
 %{_iconsdir}/hicolor/*x*/apps/keepassx.png
