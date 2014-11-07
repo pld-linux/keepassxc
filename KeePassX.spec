@@ -1,7 +1,7 @@
 # TODO
 # - forcing our cflags breaks build
 %define pre alpha6
-%define	rel 0.1
+%define	rel 1
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		KeePassX
