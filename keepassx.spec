@@ -4,13 +4,13 @@
 %define	rel 1
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
-Name:		KeePassX
+Name:		keepassx
 Version:	2.0
 Release:	0.%{pre}.%{rel}
 License:	GPL v2+
 Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
-Source0:	http://www.keepassx.org/dev/attachments/download/69/keepassx-%{version}-%{pre}.tar.gz
+Source0:	http://www.keepassx.org/dev/attachments/download/69/%{name}-%{version}-%{pre}.tar.gz
 # Source0-md5:	7c1c3a42aff63abd8db3bc8df6c963f6
 Patch0:		git.patch
 URL:		http://keepassx.sourceforge.net/
@@ -30,6 +30,7 @@ BuildRequires:	zlib-devel
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
 Requires:	shared-mime-info
+Obsoletes:	KeePassX
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,19 +53,18 @@ zaszyfrowana najlepszymi i najbardziej bezpiecznymi algorytmami
 szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
-%setup -q -n keepassx-%{version}-%{pre}
+%setup -q -n %{name}-%{version}-%{pre}
 %patch0 -p1
 
 %build
 install -d build
 cd build
 %cmake \
-	../
+	..
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
