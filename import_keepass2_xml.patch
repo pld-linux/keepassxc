@@ -1,0 +1,297 @@
+https://www.keepassx.org/forum/viewtopic.php?t=1701#p2792
+http://pastie.org/396367
+
+From 667278e695c0de610dccc7327339c65f96603d07 Mon Sep 17 00:00:00 2001
+From: Niklas Persson <niklas.persson@gmail.com>
+Date: Sun, 22 Feb 2009 01:14:54 +0100
+Subject: [PATCH] KeePass 2.06 Beta XML Importer
+
+---
+ src/import/Import_KeePass2_Xml.cpp |  175 ++++++++++++++++++++++++++++++++++++
+ src/import/Import_KeePass2_Xml.h   |   42 +++++++++
+ src/mainwindow.cpp                 |    3 +
+ src/src.pro                        |    2 +
+ 4 files changed, 222 insertions(+), 0 deletions(-)
+ create mode 100644 src/import/Import_KeePass2_Xml.cpp
+ create mode 100644 src/import/Import_KeePass2_Xml.h
+
+diff --git a/src/import/Import_KeePass2_Xml.cpp b/src/import/Import_KeePass2_Xml.cpp
+new file mode 100644
+index 0000000..14c428e
+--- /dev/null
++++ b/src/import/Import_KeePass2_Xml.cpp
+@@ -0,0 +1,175 @@
++/***************************************************************************
++ *   Copyright (C) 2007 by Tarek Saidi                                     *
++ *   tarek.saidi@arcor.de                                                  *
++ *                                                                         *
++ *   This program is free software; you can redistribute it and/or modify  *
++ *   it under the terms of the GNU General Public License as published by  *
++ *   the Free Software Foundation; version 2 of the License.               *
++
++ *                                                                         *
++ *   This program is distributed in the hope that it will be useful,       *
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
++ *   GNU General Public License for more details.                          *
++ *                                                                         *
++ *   You should have received a copy of the GNU General Public License     *
++ *   along with this program; if not, write to the                         *
++ *   Free Software Foundation, Inc.,                                       *
++ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
++ ***************************************************************************/
++ 
++
++#include "Import_KeePass2_Xml.h"
++
++bool Import_KeePass2_Xml::importDatabase(QWidget* Parent, IDatabase* database)
++{
++	db = database;
++	GuiParent = Parent;
++	QFile* file = openFile(GuiParent, identifier(), QStringList() << tr("KeePass XML Files (*.xml)") << tr("All Files (*)"));
++	
++	if (!file) return false;
++	
++	QDomDocument doc;
++	QString ErrMsg;
++	int ErrLine;
++	int ErrCol;
++	
++	if (!doc.setContent(file, false,&ErrMsg, &ErrLine, &ErrCol)) {
++		QMessageBox::critical(GuiParent, tr("Import Failed"), tr("XML parsing error on line %1 column %2:\n%3").arg(ErrLine).arg(ErrCol).arg(ErrMsg));
++		delete file;
++		return false;
++	}
++	delete file;
++	
++	// Check validity of XML file
++	QDomElement document = doc.documentElement();
++	if (document.tagName() != "KeePassFile") {
++		QMessageBox::critical(GuiParent, tr("Import Failed"), tr("Parsing error: File is no valid KeePass XML file."));
++		return false;
++	}
++	
++	// Root needs to be present
++	QDomNodeList rootList = document.elementsByTagName("Root");
++	QDomElement root;
++	if (rootList.count() != 1) {
++		QMessageBox::critical(GuiParent, tr("Import Failed"), tr("Parsing error: File is no valid KeePass XML file."));
++		return false;
++	} else {
++		root = rootList.item(0).toElement();
++	}
++	
++	QDomNodeList topLevelGroupNodes = root.childNodes();
++	for (int i=0; i<topLevelGroupNodes.count(); i++) {
++		// Skip DeletedObjects for now
++		if (topLevelGroupNodes.at(i).toElement().tagName() == "Group") {
++			if (!parseGroup(topLevelGroupNodes.at(i).toElement(), NULL)) {
++				QMessageBox::critical(GuiParent, tr("Import Failed"), tr("Parsing error: File is no valid KeePassX XML file."));
++				return false;
++			}
++		}
++	}
++	
++	return true;
++}
++
++bool Import_KeePass2_Xml::parseGroup(const QDomElement& groupElement, IGroupHandle* parentGroup)
++{
++	CGroup group;
++	QDomNodeList childNodes = groupElement.childNodes();
++	for (int i=0; i<childNodes.size(); i++) {
++		if (!childNodes.item(i).isElement()) {
++			qWarning("Import_KeePass2_Xml: Error: Invalid node.");
++			return false;
++		}
++		if (childNodes.item(i).toElement().tagName() == "IconID")
++			group.Image = childNodes.item(i).toElement().text().toInt();
++		else if (childNodes.item(i).toElement().tagName() == "Name")
++			group.Title = childNodes.item(i).toElement().text();
++	}
++	
++	IGroupHandle* groupHandle = db->addGroup(&group, parentGroup);
++	for (int i=0; i<childNodes.size(); i++) {
++		if (childNodes.item(i).toElement().tagName() == "Entry") {
++			if (!parseEntry(childNodes.item(i).toElement(), groupHandle))
++				return false;
++		} else if (childNodes.item(i).toElement().tagName() == "Group") {
++			if (!parseGroup(childNodes.item(i).toElement(), groupHandle))
++				return false;
++		}
++	}
++	
++	return true;
++}
++
++
++bool Import_KeePass2_Xml::parseEntry(const QDomElement& entryElement, IGroupHandle* group)
++{
++	if (entryElement.isNull()) {
++		qWarning("Import_KeePass2_Xml: Error: Entry element is null.");
++		return false;
++	}
++	
++	IEntryHandle* entry = db->newEntry(group);
++	QDomNodeList childNodes = entryElement.childNodes();
++	for (int i=0; i<childNodes.size(); i++) {
++		if (!childNodes.item(i).isElement()) {
++			qWarning("Import_KeePass2_Xml: Error: Invalid node.");
++			return false;
++		}
++		
++		if (childNodes.item(i).toElement().tagName() == "IconID") {
++			entry->setImage(childNodes.item(i).toElement().text().toInt());
++		} else if (childNodes.item(i).toElement().tagName() == "Times") {
++			// Time information
++			QDomNodeList times = childNodes.item(i).toElement().childNodes();
++			QString tag;
++			for (int j=0; j< times.size(); j++) {
++				tag = times.item(j).toElement().tagName();
++				if (tag == "LastModificationTime") {
++					entry->setLastMod(KpxDateTime::fromString(times.item(j).toElement().text(), Qt::ISODate));
++				} else if (tag == "CreationTime") {
++					entry->setCreation(KpxDateTime::fromString(times.item(j).toElement().text(), Qt::ISODate));
++				} else if (tag == "LastAccessTime") {
++					entry->setLastAccess(KpxDateTime::fromString(times.item(j).toElement().text(), Qt::ISODate));
++				} else if (tag == "Expires") {
++					entry->setExpire(KpxDateTime::fromString(times.item(j).toElement().text(), Qt::ISODate));
++				}
++			}
++		} else if (childNodes.item(i).toElement().tagName() == "String") {
++			// Check each String
++			QDomNodeList strings = childNodes.item(i).toElement().childNodes();
++			QString key;
++			QString value;
++			for (int j=0; j<strings.size(); j++) {
++				// Gather Key and Value
++				if (strings.item(j).toElement().tagName() == "Key")
++					key = strings.item(j).toElement().text();
++				else if (strings.item(j).toElement().tagName() == "Value")
++					value = strings.item(j).toElement().text();
++			}
++			
++			// Save information
++			if (key == "Title") {
++				entry->setTitle(value);
++			} else if (key == "UserName") {
++				entry->setUsername(value);
++			} else if (key == "Password") {
++				SecString pw;
++				pw.setString(value, true);
++				entry->setPassword(pw);
++			} else if (key == "URL") {
++				entry->setUrl(value);
++			} else if (key == "URL") {
++				entry->setUrl(value);
++			} else if (key == "Notes") {
++				QString comment = value;
++				
++				comment.replace("\r", "");
++				
++				entry->setComment(comment);
++			}
++		} 
++	}
++	
++	return true;
++}
+diff --git a/src/import/Import_KeePass2_Xml.h b/src/import/Import_KeePass2_Xml.h
+new file mode 100644
+index 0000000..e9c14ef
+--- /dev/null
++++ b/src/import/Import_KeePass2_Xml.h
+@@ -0,0 +1,42 @@
++/***************************************************************************
++ *   Copyright (C) 2007 by Tarek Saidi                                     *
++ *   tarek.saidi@arcor.de                                                  *
++ *                                                                         *
++ *   This program is free software; you can redistribute it and/or modify  *
++ *   it under the terms of the GNU General Public License as published by  *
++ *   the Free Software Foundation; version 2 of the License.               *
++
++ *                                                                         *
++ *   This program is distributed in the hope that it will be useful,       *
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
++ *   GNU General Public License for more details.                          *
++ *                                                                         *
++ *   You should have received a copy of the GNU General Public License     *
++ *   along with this program; if not, write to the                         *
++ *   Free Software Foundation, Inc.,                                       *
++ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
++ ***************************************************************************/ 
++
++#ifndef _IMPORT_KP2_XML_H_
++#define _IMPORT_KP2_XML_H_
++
++#include "Import.h"
++
++
++class Import_KeePass2_Xml:public ImporterBase, public IImport{
++	Q_OBJECT
++	
++	public:
++		virtual bool importDatabase(QWidget* GuiParent, IDatabase* Database);
++		virtual QString identifier(){return "KeePass_Xml";}
++		virtual QString title(){return "KeePass 2.06 Beta XML (*.xml)";}
++	private:
++		bool parseGroup(const QDomElement& GroupElement,IGroupHandle* ParentGroup);
++		bool parseEntry(const QDomElement& EntryElement,IGroupHandle* Group);
++		IDatabase* db;
++		QWidget* GuiParent;	
++};
++
++
++#endif
+diff --git a/src/mainwindow.cpp b/src/mainwindow.cpp
+index 0f31538..279da74 100644
+--- a/src/mainwindow.cpp
++++ b/src/mainwindow.cpp
+@@ -24,6 +24,7 @@
+ #include "import/Import_PwManager.h"
+ #include "import/Import_KWalletXml.h"
+ #include "import/Import_KeePassX_Xml.h"
++#include "import/Import_KeePass2_Xml.h"
+ #include "export/Export_Txt.h"
+ #include "export/Export_KeePassX_Xml.h"
+ 
+@@ -44,6 +45,7 @@
+ Import_KeePassX_Xml import_KeePassX_Xml;
+ Import_PwManager import_PwManager;
+ Import_KWalletXml import_KWalletXml;
++Import_KeePass2_Xml import_KeePass2_Xml;
+ Export_Txt export_Txt;
+ Export_KeePassX_Xml export_KeePassX_Xml;
+ 
+@@ -343,6 +345,7 @@ void KeepassMainWindow::setupMenus(){
+ 	menuExport->addAction(Export);}
+ 
+ 	_add_import(import_KeePassX_Xml)
++	_add_import(import_KeePass2_Xml)
+ 	_add_import(import_PwManager)
+ 	_add_import(import_KWalletXml)
+ 	_add_export(export_Txt);
+diff --git a/src/src.pro b/src/src.pro
+index 478db71..08aaf80 100644
+--- a/src/src.pro
++++ b/src/src.pro
+@@ -208,6 +208,7 @@ HEADERS += main.h \
+            import/Import.h \
+ #           import/Import_GnuKeyRing.h \
+            import/Import_KeePassX_Xml.h \
++           import/Import_KeePass2_Xml.h \
+            import/Import_KWalletXml.h \
+            import/Import_PwManager.h \
+            export/Export.h \
+@@ -266,6 +267,7 @@ SOURCES += main.cpp \
+            import/Import.cpp \
+ #           import/Import_GnuKeyRing.cpp \
+            import/Import_KeePassX_Xml.cpp \
++           import/Import_KeePass2_Xml.cpp \
+            import/Import_KWalletXml.cpp \
+            import/Import_PwManager.cpp \
+            export/Export.cpp \
+-- 
+1.6.1.2
+
