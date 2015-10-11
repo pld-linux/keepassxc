@@ -1,7 +1,7 @@
 # TODO
 # - forcing our cflags breaks build
 %define pre beta2
-%define	rel 1
+%define	rel 2
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		keepassx
@@ -12,15 +12,18 @@ Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 Source0:	http://www.keepassx.org/dev/attachments/download/115/keepassx-%{version}-%{pre}.tar.gz
 # Source0-md5:	95114e6719d12eb9a1e3ac618b7bd275
+Patch0:		git.patch
 URL:		http://keepassx.sourceforge.net/
-BuildRequires:	QtCore-devel >= 4.6.0
-BuildRequires:	QtDBus-devel >= 4.6.0
-BuildRequires:	QtGui-devel >= 4.6.0
-BuildRequires:	QtXml-devel >= 4.6.0
+BuildRequires:	Qt5Core-devel >= 5.2.0
+BuildRequires:	Qt5Concurrent-devel >= 5.2.0
+BuildRequires:	Qt5Widgets-devel >= 5.2.0
+BuildRequires:	Qt5Test-devel >= 5.2.0
+BuildRequires:	Qt5X11Extras-devel >= 5.2.0
+BuildRequires:	cmake >= 2.8.12
 BuildRequires:	libgcrypt-devel >= 1.6
-BuildRequires:	qt4-build >= 4.6.0
-BuildRequires:	qt4-linguist >= 4.6.0
-BuildRequires:	qt4-qmake >= 4.6.0
+BuildRequires:	qt5-build >= 5.2.0
+BuildRequires:	qt5-linguist >= 5.2.0
+BuildRequires:	qt5-qmake >= 5.2.0
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
@@ -53,6 +56,7 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q -n %{name}-%{version}-%{pre}
+%patch0 -p1
 
 %build
 install -d build
@@ -103,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(zh_CN) %{_datadir}/keepassx/translations/keepassx_zh_CN.qm
 %lang(zh_TW) %{_datadir}/keepassx/translations/keepassx_zh_TW.qm
 %dir %{_libdir}/keepassx
-%attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-x11.so
+%attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassx.png
 %{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassx.png
 %{_iconsdir}/hicolor/scalable/apps/keepassx.svgz
