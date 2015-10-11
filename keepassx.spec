@@ -8,20 +8,21 @@ Release:	0.%{pre}.%{rel}
 License:	GPL v2+
 Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
-Source0:	http://www.keepassx.org/dev/attachments/download/115/keepassx-%{version}-%{pre}.tar.gz
+Source0:	http://www.keepassx.org/dev/attachments/download/115/%{name}-%{version}-%{pre}.tar.gz
 # Source0-md5:	95114e6719d12eb9a1e3ac618b7bd275
 Patch0:		git.patch
 URL:		http://keepassx.sourceforge.net/
-BuildRequires:	Qt5Core-devel >= 5.2.0
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
-BuildRequires:	Qt5Widgets-devel >= 5.2.0
+BuildRequires:	Qt5Core-devel >= 5.2.0
 BuildRequires:	Qt5Test-devel >= 5.2.0
+BuildRequires:	Qt5Widgets-devel >= 5.2.0
 BuildRequires:	Qt5X11Extras-devel >= 5.2.0
 BuildRequires:	cmake >= 2.8.12
 BuildRequires:	libgcrypt-devel >= 1.6
 BuildRequires:	qt5-build >= 5.2.0
 BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
+BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
@@ -68,6 +69,13 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%find_lang %{name} --with-qm
+
+%{__sed} -i -e '
+	s/%lang(en_plurals)/%%lang(en)/
+	s/%lang(nl_NL)/%%lang(nl)/
+' %{name}.lang
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -81,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 %update_desktop_database_postun
 %update_mime_database
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/keepassx
 %{_datadir}/mime/packages/keepassx.xml
@@ -89,21 +97,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/keepassx
 %{_datadir}/keepassx/icons
 %dir %{_datadir}/keepassx/translations
-%{_datadir}/keepassx/translations/keepassx_en_plurals.qm
-%lang(cs) %{_datadir}/keepassx/translations/keepassx_cs.qm
-%lang(da) %{_datadir}/keepassx/translations/keepassx_da.qm
-%lang(de) %{_datadir}/keepassx/translations/keepassx_de.qm
-%lang(es) %{_datadir}/keepassx/translations/keepassx_es.qm
-%lang(fr) %{_datadir}/keepassx/translations/keepassx_fr.qm
-%lang(id) %{_datadir}/keepassx/translations/keepassx_id.qm
-%lang(it) %{_datadir}/keepassx/translations/keepassx_it.qm
-%lang(ja) %{_datadir}/keepassx/translations/keepassx_ja.qm
-%lang(nl) %{_datadir}/keepassx/translations/keepassx_nl_NL.qm
-%lang(pt_PT) %{_datadir}/keepassx/translations/keepassx_pt_PT.qm
-%lang(ru) %{_datadir}/keepassx/translations/keepassx_ru.qm
-%lang(sv) %{_datadir}/keepassx/translations/keepassx_sv.qm
-%lang(zh_CN) %{_datadir}/keepassx/translations/keepassx_zh_CN.qm
-%lang(zh_TW) %{_datadir}/keepassx/translations/keepassx_zh_TW.qm
 %dir %{_libdir}/keepassx
 %attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassx.png
