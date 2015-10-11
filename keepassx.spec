@@ -1,7 +1,7 @@
 # TODO
 # - forcing our cflags breaks build
-%define pre alpha6
-%define	rel 2
+%define pre beta2
+%define	rel 1
 Summary:	KeePassX - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
 Name:		keepassx
@@ -10,9 +10,8 @@ Release:	0.%{pre}.%{rel}
 License:	GPL v2+
 Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
-Source0:	http://www.keepassx.org/dev/attachments/download/69/%{name}-%{version}-%{pre}.tar.gz
-# Source0-md5:	7c1c3a42aff63abd8db3bc8df6c963f6
-Patch0:		git.patch
+Source0:	http://www.keepassx.org/dev/attachments/download/115/keepassx-%{version}-%{pre}.tar.gz
+# Source0-md5:	95114e6719d12eb9a1e3ac618b7bd275
 URL:		http://keepassx.sourceforge.net/
 BuildRequires:	QtCore-devel >= 4.6.0
 BuildRequires:	QtDBus-devel >= 4.6.0
@@ -54,7 +53,6 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q -n %{name}-%{version}-%{pre}
-%patch0 -p1
 
 %build
 install -d build
@@ -89,11 +87,21 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/keepassx
 %{_datadir}/keepassx/icons
 %dir %{_datadir}/keepassx/translations
-%lang(de) %{_datadir}/keepassx/translations/keepassx_de.qm
 %{_datadir}/keepassx/translations/keepassx_en_plurals.qm
+%lang(cs) %{_datadir}/keepassx/translations/keepassx_cs.qm
+%lang(da) %{_datadir}/keepassx/translations/keepassx_da.qm
+%lang(de) %{_datadir}/keepassx/translations/keepassx_de.qm
+%lang(es) %{_datadir}/keepassx/translations/keepassx_es.qm
+%lang(fr) %{_datadir}/keepassx/translations/keepassx_fr.qm
+%lang(id) %{_datadir}/keepassx/translations/keepassx_id.qm
 %lang(it) %{_datadir}/keepassx/translations/keepassx_it.qm
+%lang(ja) %{_datadir}/keepassx/translations/keepassx_ja.qm
 %lang(nl) %{_datadir}/keepassx/translations/keepassx_nl_NL.qm
+%lang(pt_PT) %{_datadir}/keepassx/translations/keepassx_pt_PT.qm
+%lang(ru) %{_datadir}/keepassx/translations/keepassx_ru.qm
 %lang(sv) %{_datadir}/keepassx/translations/keepassx_sv.qm
+%lang(zh_CN) %{_datadir}/keepassx/translations/keepassx_zh_CN.qm
+%lang(zh_TW) %{_datadir}/keepassx/translations/keepassx_zh_TW.qm
 %dir %{_libdir}/keepassx
 %attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-x11.so
 %{_iconsdir}/hicolor/*x*/apps/keepassx.png
