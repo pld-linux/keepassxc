@@ -8,7 +8,6 @@ Group:		X11/Applications
 #Source0:	http://downloads.sourceforge.net/keepassx/keepassx-%{version}.tar.gz
 Source0:	http://www.keepassx.org/releases/2.0/keepassx-%{version}.tar.gz
 # Source0-md5:	ded7db880d07cd1e5f7bd5bf3cc8c0f4
-Patch0:		git.patch
 URL:		http://keepassx.sourceforge.net/
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
 BuildRequires:	Qt5Core-devel >= 5.2.0
@@ -53,7 +52,6 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 install -d build
