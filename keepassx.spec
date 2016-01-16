@@ -94,7 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/keepassx/icons
 %dir %{_datadir}/keepassx/translations
 %dir %{_libdir}/keepassx
-%attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-xcb.so
+%attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-x11.so
 %{_iconsdir}/hicolor/*x*/apps/keepassx.png
 %{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassx.png
 %{_iconsdir}/hicolor/scalable/apps/keepassx.svgz
