@@ -1,38 +1,51 @@
-Summary:	KeePassX - Cross Platform Password Manager
-Summary(pl.UTF-8):	KeePassX - Wieloplatformowy zarządca haseł
-Name:		keepassx
-Version:	2.0.2
-Release:	2
+Summary:	KeePassXC - Cross Platform Password Manager
+Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
+Name:		keepassxc
+Version:	2.3.4
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://www.keepassx.org/releases/%{version}/keepassx-%{version}.tar.gz
-# Source0-md5:	65d098dff663768911847a1e92d0f01d
-Patch0:		git.patch
-URL:		https://www.keepassx.org/
+Source0:	https://github.com/keepassxreboot/keepassxc/archive/%{version}.tar.gz
+# Source0-md5:	bb173c1499cc088a5ca6caf72ecc8084
+URL:		https://keepassxc.org/
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
 BuildRequires:	Qt5Core-devel >= 5.2.0
+BuildRequires:	Qt5DBus-devel >= 5.2.0
+BuildRequires:	Qt5Network-devel >= 5.2.0
 BuildRequires:	Qt5Test-devel >= 5.2.0
 BuildRequires:	Qt5Widgets-devel >= 5.2.0
 BuildRequires:	Qt5X11Extras-devel >= 5.2.0
-BuildRequires:	cmake >= 2.8.12
-BuildRequires:	libgcrypt-devel >= 1.6
+BuildRequires:	cmake >= 3.1.0
+BuildRequires:	libargon2-devel
+BuildRequires:	libgcrypt-devel >= 1.7.0
+BuildRequires:	libgpg-error-devel
+BuildRequires:	libsodium-devel >= 1.0.12
 BuildRequires:	qt5-build >= 5.2.0
 BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
 BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libX11-devel
-BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXtst-devel
-BuildRequires:	zlib-devel
+BuildRequires:	zlib-devel >= 1.2.0
+Requires:	Qt5Concurrent >= 5.2.0
+Requires:	Qt5Core >= 5.2.0
+Requires:	Qt5DBus >= 5.2.0
+Requires:	Qt5Network >= 5.2.0
+Requires:	Qt5Widgets >= 5.2.0
+Requires:	Qt5X11Extras >= 5.2.0
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
+Requires:	libgcrypt >= 1.7.0
+Requires:	libsodium >= 1.0.12
 Requires:	shared-mime-info
+Requires:	zlib >= 1.2.0
 Obsoletes:	KeePassX
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-KeePassX is a free/open-source password manager or safe which helps
+KeePassXC is a free/open-source password manager or safe which helps
 you to manage your passwords in a secure way. You can put all your
 passwords in one database, which is locked with one master key or a
 key-disk. So you only have to remember one single master password or
@@ -41,23 +54,25 @@ encrypted using the best and most secure encryption algorithms
 currently known (AES and Twofish).
 
 %description -l pl.UTF-8
-KeePassX to darmowy i mający otwarte źródła zarządca do przechowywania
-haseł, który pozwala na zarządzanie hasłami w bardzo bezpieczny
-sposób. Pozwala umieścić wszystkie swoje hasła w jednej bazie, która
-jest zabezpieczona poprzez jedno bardzo trudne hasło albo dysk z
-kluczem. Wystarczy więc zapamiętać jedno trudne hasło lub umieścić
-dysk z kluczem aby odblokować całą bazę z kluczami. Baza jest
+KeePassXC to darmowy i mający otwarte źródła zarządca do
+przechowywania haseł, który pozwala na zarządzanie hasłami w bardzo
+bezpieczny sposób. Pozwala umieścić wszystkie swoje hasła w jednej
+bazie, która jest zabezpieczona poprzez jedno bardzo trudne hasło albo
+dysk z kluczem. Wystarczy więc zapamiętać jedno trudne hasło lub
+umieścić dysk z kluczem aby odblokować całą bazę z kluczami. Baza jest
 zaszyfrowana najlepszymi i najbardziej bezpiecznymi algorytmami
 szyfrowania jakie są do tej pory znane (AES i TwoFish).
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 install -d build
 cd build
 %cmake \
+	-DKEEPASSXC_BUILD_TYPE=Release \
+	-DWITH_XC_BROWSER=ON \
+	-DWITH_XC_SSHAGENT=ON \
 	..
 %{__make}
 
@@ -66,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang %{name} --with-qm
+%find_lang keepassx %{name}.lang --with-qm
 
 %{__sed} -i -e '
 	s/%lang(en_plurals)/%%lang(en)/
@@ -88,14 +103,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/keepassx
-%{_datadir}/mime/packages/keepassx.xml
-%{_desktopdir}/keepassx.desktop
-%dir %{_datadir}/keepassx
-%{_datadir}/keepassx/icons
-%dir %{_datadir}/keepassx/translations
-%dir %{_libdir}/keepassx
-%attr(755,root,root) %{_libdir}/keepassx/libkeepassx-autotype-xcb.so
-%{_iconsdir}/hicolor/*x*/apps/keepassx.png
-%{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassx.png
-%{_iconsdir}/hicolor/scalable/apps/keepassx.svgz
+%attr(755,root,root) %{_bindir}/keepassxc
+%attr(755,root,root) %{_bindir}/keepassxc-cli
+%attr(755,root,root) %{_bindir}/keepassxc-proxy
+%{_datadir}/metainfo/org.keepassxc.KeePassXC.appdata.xml
+%{_datadir}/mime/packages/keepassxc.xml
+%{_desktopdir}/org.keepassxc.KeePassXC.desktop
+%dir %{_datadir}/keepassxc
+%{_datadir}/keepassxc/icons
+%dir %{_datadir}/keepassxc/translations
+%{_datadir}/keepassxc/wordlists
+%dir %{_libdir}/keepassxc
+%attr(755,root,root) %{_libdir}/keepassxc/libkeepassx-autotype-xcb.so
+%{_iconsdir}/hicolor/*x*/apps/keepassxc*.png
+%{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassxc.png
+%{_iconsdir}/hicolor/scalable/apps/keepassxc*.svgz
+%{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svgz
+%{_mandir}/man1/keepassxc-cli.1*
