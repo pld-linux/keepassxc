@@ -20,6 +20,7 @@ BuildRequires:	libargon2-devel
 BuildRequires:	libgcrypt-devel >= 1.7.0
 BuildRequires:	libgpg-error-devel
 BuildRequires:	libsodium-devel >= 1.0.12
+BuildRequires:	libyubikey-devel
 BuildRequires:	qt5-build >= 5.2.0
 BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
@@ -28,6 +29,7 @@ BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXtst-devel
+BuildRequires:	ykpers-devel
 BuildRequires:	zlib-devel >= 1.2.0
 Requires:	Qt5Concurrent >= 5.2.0
 Requires:	Qt5Core >= 5.2.0
@@ -73,6 +75,7 @@ cd build
 	-DKEEPASSXC_BUILD_TYPE=Release \
 	-DWITH_XC_BROWSER=ON \
 	-DWITH_XC_SSHAGENT=ON \
+	-DWITH_XC_YUBIKEY=ON \
 	..
 %{__make}
 
