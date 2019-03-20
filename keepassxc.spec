@@ -1,17 +1,19 @@
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.3.4
+Version:	2.4.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://github.com/keepassxreboot/keepassxc/archive/%{version}.tar.gz
-# Source0-md5:	bb173c1499cc088a5ca6caf72ecc8084
+# Source0-md5:	1ffee705ee0352231dcea520cafebe9d
 URL:		https://keepassxc.org/
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
 BuildRequires:	Qt5Core-devel >= 5.2.0
 BuildRequires:	Qt5DBus-devel >= 5.2.0
+BuildRequires:	Qt5Gui-devel >= 5.2.0
 BuildRequires:	Qt5Network-devel >= 5.2.0
+BuildRequires:	Qt5Svg-devel >= 5.2.0
 BuildRequires:	Qt5Test-devel >= 5.2.0
 BuildRequires:	Qt5Widgets-devel >= 5.2.0
 BuildRequires:	Qt5X11Extras-devel >= 5.2.0
@@ -21,6 +23,7 @@ BuildRequires:	libgcrypt-devel >= 1.7.0
 BuildRequires:	libgpg-error-devel
 BuildRequires:	libsodium-devel >= 1.0.12
 BuildRequires:	libyubikey-devel
+BuildRequires:	qrencode-devel
 BuildRequires:	qt5-build >= 5.2.0
 BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
@@ -34,7 +37,9 @@ BuildRequires:	zlib-devel >= 1.2.0
 Requires:	Qt5Concurrent >= 5.2.0
 Requires:	Qt5Core >= 5.2.0
 Requires:	Qt5DBus >= 5.2.0
+Requires:	Qt5Gui >= 5.2.0
 Requires:	Qt5Network >= 5.2.0
+Requires:	Qt5Svg >= 5.2.0
 Requires:	Qt5Widgets >= 5.2.0
 Requires:	Qt5X11Extras >= 5.2.0
 Requires:	desktop-file-utils
@@ -74,6 +79,7 @@ cd build
 %cmake \
 	-DKEEPASSXC_BUILD_TYPE=Release \
 	-DWITH_XC_BROWSER=ON \
+	-DWITH_XC_KEESHARE=ON \
 	-DWITH_XC_SSHAGENT=ON \
 	-DWITH_XC_YUBIKEY=ON \
 	..
@@ -115,11 +121,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/keepassxc
 %{_datadir}/keepassxc/icons
 %dir %{_datadir}/keepassxc/translations
+%{_datadir}/keepassxc/wizard
 %{_datadir}/keepassxc/wordlists
 %dir %{_libdir}/keepassxc
 %attr(755,root,root) %{_libdir}/keepassxc/libkeepassx-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassxc*.png
 %{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassxc.png
-%{_iconsdir}/hicolor/scalable/apps/keepassxc*.svgz
-%{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svgz
+%{_iconsdir}/hicolor/scalable/apps/keepassxc*.svg
+%{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svg
 %{_mandir}/man1/keepassxc-cli.1*
