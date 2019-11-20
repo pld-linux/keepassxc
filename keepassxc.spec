@@ -35,7 +35,7 @@ BuildRequires:	xorg-lib-libXtst-devel
 BuildRequires:	ykpers-devel
 BuildRequires:	zlib-devel >= 1.2.0
 Requires:	Qt5Concurrent >= 5.2.0
-%requires_ge_to:	Qt5Core Qt5Core-devel
+%requires_ge_to	Qt5Core Qt5Core-devel
 Requires:	Qt5DBus >= 5.2.0
 Requires:	Qt5Gui >= 5.2.0
 Requires:	Qt5Network >= 5.2.0
