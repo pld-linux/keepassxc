@@ -1,12 +1,12 @@
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.5.4
+Version:	2.6.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://github.com/keepassxreboot/keepassxc/archive/%{version}.tar.gz
-# Source0-md5:	4e15c9f71d3971615b8be54614ff6d92
+# Source0-md5:	787e72da54de35496d3a2c73d676df86
 URL:		https://keepassxc.org/
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
 BuildRequires:	Qt5Core-devel >= 5.2.0
@@ -17,7 +17,7 @@ BuildRequires:	Qt5Svg-devel >= 5.2.0
 BuildRequires:	Qt5Test-devel >= 5.2.0
 BuildRequires:	Qt5Widgets-devel >= 5.2.0
 BuildRequires:	Qt5X11Extras-devel >= 5.2.0
-BuildRequires:	cmake >= 3.1.0
+BuildRequires:	cmake >= 3.3.0
 BuildRequires:	libargon2-devel
 BuildRequires:	libgcrypt-devel >= 1.7.0
 BuildRequires:	libgpg-error-devel
@@ -29,6 +29,7 @@ BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
 BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.230
+BuildRequires:	ruby-asciidoctor
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXtst-devel
@@ -122,12 +123,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/keepassxc/docs
 %{_datadir}/keepassxc/icons
 %dir %{_datadir}/keepassxc/translations
-%{_datadir}/keepassxc/wizard
 %{_datadir}/keepassxc/wordlists
 %dir %{_libdir}/keepassxc
 %attr(755,root,root) %{_libdir}/keepassxc/libkeepassx-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassxc*.png
-%{_iconsdir}/hicolor/*x*/mimetypes/application-x-keepassxc.png
 %{_iconsdir}/hicolor/scalable/apps/keepassxc*.svg
 %{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svg
 %{_mandir}/man1/keepassxc.1*
