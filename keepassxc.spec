@@ -30,9 +30,11 @@ BuildRequires:	qt5-qmake >= 5.2.0
 BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.230
 BuildRequires:	ruby-asciidoctor
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXtst-devel
+BuildRequires:	xz
 BuildRequires:	ykpers-devel
 BuildRequires:	zlib-devel >= 1.2.0
 Requires:	Qt5Concurrent >= 5.2.0
