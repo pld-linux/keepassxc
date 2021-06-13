@@ -29,7 +29,7 @@ BuildRequires:	qt5-linguist >= 5.2.0
 BuildRequires:	qt5-qmake >= 5.2.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(find_lang) >= 1.37
-BuildRequires:	rpmbuild(macros) >= 1.230
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	ruby-asciidoctor
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
