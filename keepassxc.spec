@@ -1,12 +1,12 @@
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.6.6
+Version:	2.7.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	https://github.com/keepassxreboot/keepassxc/releases/download/%{version}/%{name}-%{version}-src.tar.xz 
-# Source0-md5:	ea440316c59f46a1fe1c3ccbad1513f1
+Source0:	https://github.com/keepassxreboot/keepassxc/releases/download/%{version}/%{name}-%{version}-src.tar.xz
+# Source0-md5:	18b3bf6a14c3d735d469551b33d6a4e3
 URL:		https://keepassxc.org/
 BuildRequires:	Qt5Concurrent-devel >= 5.2.0
 BuildRequires:	Qt5Core-devel >= 5.2.0
@@ -17,12 +17,13 @@ BuildRequires:	Qt5Svg-devel >= 5.2.0
 BuildRequires:	Qt5Test-devel >= 5.2.0
 BuildRequires:	Qt5Widgets-devel >= 5.2.0
 BuildRequires:	Qt5X11Extras-devel >= 5.2.0
+BuildRequires:	botan2-devel >= 2.11.0
 BuildRequires:	cmake >= 3.3.0
 BuildRequires:	libargon2-devel
-BuildRequires:	libgcrypt-devel >= 1.7.0
-BuildRequires:	libgpg-error-devel
-BuildRequires:	libsodium-devel >= 1.0.12
-BuildRequires:	libyubikey-devel
+BuildRequires:	libusb-devel
+BuildRequires:	minizip-devel
+BuildRequires:	pcsc-lite-devel
+BuildRequires:	pkgconfig
 BuildRequires:	qrencode-devel
 BuildRequires:	qt5-build >= 5.2.0
 BuildRequires:	qt5-linguist >= 5.2.0
@@ -48,8 +49,6 @@ Requires:	Qt5Widgets >= 5.2.0
 Requires:	Qt5X11Extras >= 5.2.0
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
-Requires:	libgcrypt >= 1.7.0
-Requires:	libsodium >= 1.0.12
 Requires:	shared-mime-info
 Requires:	zlib >= 1.2.0
 Obsoletes:	KeePassX
@@ -94,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang keepassx %{name}.lang --with-qm
+%find_lang %{name} --with-qm
 
 %{__sed} -i -e '
 	s/%lang(en_plurals)/%%lang(en)/
@@ -128,7 +127,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/keepassxc/translations
 %{_datadir}/keepassxc/wordlists
 %dir %{_libdir}/keepassxc
-%attr(755,root,root) %{_libdir}/keepassxc/libkeepassx-autotype-xcb.so
+%attr(755,root,root) %{_libdir}/keepassxc/libkeepassxc-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassxc*.png
 %{_iconsdir}/hicolor/scalable/apps/keepassxc*.svg
 %{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svg
