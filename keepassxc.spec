@@ -1,33 +1,35 @@
+%define		qtver	5.12.0
+
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.7.6
+Version:	2.7.7
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://github.com/keepassxreboot/keepassxc/releases/download/%{version}/%{name}-%{version}-src.tar.xz
-# Source0-md5:	0dfa2371e4f1619b9b9232b7568886a6
+# Source0-md5:	3d877de7149ab18c0a95fc86b295064f
 URL:		https://keepassxc.org/
-BuildRequires:	Qt5Concurrent-devel >= 5.2.0
-BuildRequires:	Qt5Core-devel >= 5.2.0
-BuildRequires:	Qt5DBus-devel >= 5.2.0
-BuildRequires:	Qt5Gui-devel >= 5.2.0
-BuildRequires:	Qt5Network-devel >= 5.2.0
-BuildRequires:	Qt5Svg-devel >= 5.2.0
-BuildRequires:	Qt5Test-devel >= 5.2.0
-BuildRequires:	Qt5Widgets-devel >= 5.2.0
-BuildRequires:	Qt5X11Extras-devel >= 5.2.0
+BuildRequires:	Qt5Concurrent-devel >= %{qtver}
+BuildRequires:	Qt5Core-devel >= %{qtver}
+BuildRequires:	Qt5DBus-devel >= %{qtver}
+BuildRequires:	Qt5Gui-devel >= %{qtver}
+BuildRequires:	Qt5Network-devel >= %{qtver}
+BuildRequires:	Qt5Svg-devel >= %{qtver}
+BuildRequires:	Qt5Test-devel >= %{qtver}
+BuildRequires:	Qt5Widgets-devel >= %{qtver}
+BuildRequires:	Qt5X11Extras-devel >= %{qtver}
 BuildRequires:	botan2-devel >= 2.11.0
-BuildRequires:	cmake >= 3.3.0
+BuildRequires:	cmake >= 3.10.0
 BuildRequires:	libargon2-devel
 BuildRequires:	libusb-devel
 BuildRequires:	minizip-devel
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	qrencode-devel
-BuildRequires:	qt5-build >= 5.2.0
-BuildRequires:	qt5-linguist >= 5.2.0
-BuildRequires:	qt5-qmake >= 5.2.0
+BuildRequires:	qt5-build >= %{qtver}
+BuildRequires:	qt5-linguist >= %{qtver}
+BuildRequires:	qt5-qmake >= %{qtver}
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.605
@@ -39,14 +41,14 @@ BuildRequires:	xorg-lib-libXtst-devel
 BuildRequires:	xz
 BuildRequires:	ykpers-devel
 BuildRequires:	zlib-devel >= 1.2.0
-Requires:	Qt5Concurrent >= 5.2.0
+Requires:	Qt5Concurrent >= %{qtver}
 %requires_ge_to	Qt5Core Qt5Core-devel
-Requires:	Qt5DBus >= 5.2.0
-Requires:	Qt5Gui >= 5.2.0
-Requires:	Qt5Network >= 5.2.0
-Requires:	Qt5Svg >= 5.2.0
-Requires:	Qt5Widgets >= 5.2.0
-Requires:	Qt5X11Extras >= 5.2.0
+Requires:	Qt5DBus >= %{qtver}
+Requires:	Qt5Gui >= %{qtver}
+Requires:	Qt5Network >= %{qtver}
+Requires:	Qt5Svg >= %{qtver}
+Requires:	Qt5Widgets >= %{qtver}
+Requires:	Qt5X11Extras >= %{qtver}
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
 Requires:	shared-mime-info
@@ -82,6 +84,7 @@ cd build
 %cmake \
 	-DKEEPASSXC_BUILD_TYPE=Release \
 	-DWITH_XC_BROWSER=ON \
+	-DWITH_XC_BROWSER_PASSKEYS=ON \
 	-DWITH_XC_KEESHARE=ON \
 	-DWITH_XC_SSHAGENT=ON \
 	-DWITH_XC_YUBIKEY=ON \
