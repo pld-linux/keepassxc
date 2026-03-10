@@ -3,12 +3,12 @@
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.7.11
+Version:	2.7.12
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://github.com/keepassxreboot/keepassxc/releases/download/%{version}/%{name}-%{version}-src.tar.xz
-# Source0-md5:	581563d8d41d9f0977a8417d31d25e99
+# Source0-md5:	29725126c211f12b6f533a93a83aa8ab
 URL:		https://keepassxc.org/
 BuildRequires:	Qt5Concurrent-devel >= %{qtver}
 BuildRequires:	Qt5Core-devel >= %{qtver}
