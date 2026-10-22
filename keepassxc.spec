@@ -1,35 +1,33 @@
-%define		qtver	5.12.0
+%define		qtver	6.2.4
 
 Summary:	KeePassXC - Cross Platform Password Manager
 Summary(pl.UTF-8):	KeePassXC - Wieloplatformowy zarządca haseł
 Name:		keepassxc
-Version:	2.7.12
+Version:	2.8.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	https://github.com/keepassxreboot/keepassxc/releases/download/%{version}/%{name}-%{version}-src.tar.xz
-# Source0-md5:	29725126c211f12b6f533a93a83aa8ab
+# Source0-md5:	81fc392364506b87be37e771f1341f6c
 URL:		https://keepassxc.org/
-BuildRequires:	Qt5Concurrent-devel >= %{qtver}
-BuildRequires:	Qt5Core-devel >= %{qtver}
-BuildRequires:	Qt5DBus-devel >= %{qtver}
-BuildRequires:	Qt5Gui-devel >= %{qtver}
-BuildRequires:	Qt5Network-devel >= %{qtver}
-BuildRequires:	Qt5Svg-devel >= %{qtver}
-BuildRequires:	Qt5Test-devel >= %{qtver}
-BuildRequires:	Qt5Widgets-devel >= %{qtver}
-BuildRequires:	Qt5X11Extras-devel >= %{qtver}
-BuildRequires:	botan2-devel >= 2.11.0
-BuildRequires:	cmake >= 3.10.0
-BuildRequires:	libargon2-devel
+BuildRequires:	Qt6Concurrent-devel >= %{qtver}
+BuildRequires:	Qt6Core-devel >= %{qtver}
+BuildRequires:	Qt6DBus-devel >= %{qtver}
+BuildRequires:	Qt6Gui-devel >= %{qtver}
+BuildRequires:	Qt6Network-devel >= %{qtver}
+BuildRequires:	Qt6Svg-devel >= %{qtver}
+BuildRequires:	Qt6Test-devel >= %{qtver}
+BuildRequires:	Qt6Widgets-devel >= %{qtver}
+BuildRequires:	botan2-devel >= 2.19.1
+BuildRequires:	cmake >= 3.16.0
+BuildRequires:	libstdc++-devel >= 6:8
 BuildRequires:	libusb-devel
 BuildRequires:	minizip-devel
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	qrencode-devel
-BuildRequires:	qt5-build >= %{qtver}
-BuildRequires:	qt5-linguist >= %{qtver}
-BuildRequires:	qt5-qmake >= %{qtver}
+BuildRequires:	qt6-build >= %{qtver}
+BuildRequires:	qt6-linguist >= %{qtver}
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(find_lang) >= 1.37
 BuildRequires:	rpmbuild(macros) >= 1.605
@@ -38,18 +36,18 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXtst-devel
+BuildRequires:	xorg-lib-libxkbcommon-devel
 BuildRequires:	xz
 BuildRequires:	ykpers-devel
 BuildRequires:	zlib-devel >= 1.2.0
 BuildRequires:	zxcvbn-c-devel
-Requires:	Qt5Concurrent >= %{qtver}
-%requires_ge_to	Qt5Core Qt5Core-devel
-Requires:	Qt5DBus >= %{qtver}
-Requires:	Qt5Gui >= %{qtver}
-Requires:	Qt5Network >= %{qtver}
-Requires:	Qt5Svg >= %{qtver}
-Requires:	Qt5Widgets >= %{qtver}
-Requires:	Qt5X11Extras >= %{qtver}
+Requires:	Qt6Concurrent >= %{qtver}
+%requires_ge_to	Qt6Core Qt6Core-devel
+Requires:	Qt6DBus >= %{qtver}
+Requires:	Qt6Gui >= %{qtver}
+Requires:	Qt6Network >= %{qtver}
+Requires:	Qt6Svg >= %{qtver}
+Requires:	Qt6Widgets >= %{qtver}
 Requires:	desktop-file-utils
 Requires:	hicolor-icon-theme
 Requires:	shared-mime-info
@@ -80,18 +78,12 @@ szyfrowania jakie są do tej pory znane (AES i TwoFish).
 %setup -q
 
 %build
-install -d build
-cd build
-export CXXFLAGS="%{rpmcxxflags} -I/usr/include/zxcvbn"
-%cmake \
+%cmake -B build \
 	-DKEEPASSXC_BUILD_TYPE=Release \
-	-DWITH_XC_BROWSER=ON \
-	-DWITH_XC_BROWSER_PASSKEYS=ON \
-	-DWITH_XC_KEESHARE=ON \
-	-DWITH_XC_SSHAGENT=ON \
-	-DWITH_XC_YUBIKEY=ON \
-	..
-%{__make}
+	-DKPXC_FEATURE_BROWSER=ON \
+	-DKPXC_FEATURE_SSHAGENT=ON \
+	-DKPXC_FEATURE_UPDATES=OFF
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -131,10 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/keepassxc/icons
 %dir %{_datadir}/keepassxc/translations
 %{_datadir}/keepassxc/wordlists
-%dir %{_libdir}/keepassxc
-%attr(755,root,root) %{_libdir}/keepassxc/libkeepassxc-autotype-xcb.so
 %{_iconsdir}/hicolor/*x*/apps/keepassxc*.png
 %{_iconsdir}/hicolor/scalable/apps/keepassxc*.svg
 %{_iconsdir}/hicolor/scalable/mimetypes/application-x-keepassxc.svg
 %{_mandir}/man1/keepassxc.1*
 %{_mandir}/man1/keepassxc-cli.1*
+%{_datadir}/polkit-1/actions/org.keepassxc.KeePassXC.policy
